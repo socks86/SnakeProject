@@ -1,14 +1,44 @@
-const http = require('http');
+let express = require('express');
+var app = require('express')();
+var http = require('http').Server(app);
+let io = require('socket.io')(http);
+const request = require('request');
 
-const hostname = '127.0.0.1';
-const port = 3000;
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('This is how we doooo it');
+app.use(express.static('public'))
+
+var oldMsg=[];
+
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
 });
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+io.on('connection', function(socket){
+  console.log('A user connected.');
+  socket.on('disconnect', function(){
+    console.log('A user disconnected');
+  });
+  socket.on('clientMsg',function(data){
+    io.emit('serverMsg',data);
+    pushOldMsg(data);
+  });
+  socket.on('announce',function(data){
+    socket.broadcast.emit('serverMsg',data); pushOldMsg(data);
+  });
+  socket.on('requestOld',function(){ writeOld(socket);});
 });
+  
+function pushOldMsg(data){
+  if(oldMsg.length>=10){
+    oldMsg.shift();
+  }
+  oldMsg.push(data);
+}
+
+function writeOld(socket){
+  for (var i=0; i<oldMsg.length; i++){
+    socket.emit("serverMsg",oldMsg[i]);
+  }
+}
+
+http.listen(3000, function(){});
