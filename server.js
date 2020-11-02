@@ -40,5 +40,5 @@ function writeOld(socket){
     socket.emit("serverMsg",oldMsg[i]);
   }
 }
-
+console.log("server listening on 127.0.0.1:3000");
 http.listen(3000, function(){});
