@@ -1,25 +1,19 @@
-
-  // document.getElementById('msg').onkeydown = function(e){
-  //   if (e.keyCode==13){
-  //      var data ={};
-  //      data.user = username;
-  //      data.msg = getMsgText();
-  //      socket.emit('clientMsg',data);
-  //   }
-  // }
-  
-  // function getMsgText(){
-  //   var msg = document.getElementById('msg').value;
-  //   document.getElementById('msg').value = '';
-  //   return msg;
-  // }
-
-  //graphics object
-  //drawgame
-
-  //input events
+//add a key listener
 document.addEventListener('keydown', handleKeypress);
-
+//emit socket events when game controls are pressed
 function handleKeypress(e){
-  console.log(e.code);
+  switch (e.code){
+    case "ArrowUp":
+      socket.emit('moveRequest','up');
+      break;
+    case "ArrowDown":
+      socket.emit('moveRequest','down');
+      break;  
+    case "ArrowLeft":
+      socket.emit('moveRequest','left');
+      break;
+    case "ArrowRight":
+      socket.emit('moveRequest','right');
+      break;
+  };
 }

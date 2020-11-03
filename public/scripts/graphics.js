@@ -44,33 +44,24 @@ graphics.addSprite = function(image,x,y){
     this.sprites.push(newSprite);
 };
 
+graphics.makeSnakeSpriteFrame = function(){};
+graphics.makeItemSpriteFrame = function(){};
+graphics.makeMobSpriteFrame = function(){};
+
+graphics.showGameState = function(gameState){
+    this.sprites=[];
+    for (var i=0;i<gameState.length;i++){
+        var gameObject = gameState[i];
+        //some switch statement to pass the gameobject to the right sprite create function
+        graphics.addSprite('../images/snake head.png',gameObject.x,gameObject.y);
+    }
+    graphics.draw();
+};
+
 function testGraphics(){
     graphics.sprites = [];
     for(var i=0;i<100;i++){
-        graphics.addSprite('../images/snake head.png',Math.floor(Math.random()*18),Math.floor(Math.random()*32));
+        graphics.addSprite('../images/snake head.png',Math.floor(Math.random()*32),Math.floor(Math.random()*18));
     }
     graphics.draw();
 }
-// // load the texture we need
-// app.loader.add('bunny', '../images/snake head.png').load((loader, resources) => {
-//     // This creates a texture from a 'bunny.png' image
-//     const bunny = new PIXI.Sprite(resources.bunny.texture);
-
-//     // Setup the position of the bunny
-//     bunny.x = app.renderer.width / 2;
-//     bunny.y = app.renderer.height / 2;
-
-//     // Rotate around the center
-//     bunny.anchor.x = 0.5;
-//     bunny.anchor.y = 0.5;
-
-//     // Add the bunny to the scene we are building
-//     app.stage.addChild(bunny);
-
-//     // Listen for frame updates
-//     app.ticker.add(() => {
-//          // each frame we spin the bunny around a bit
-//         bunny.rotation += 0.01;
-//     });
-// });
-
