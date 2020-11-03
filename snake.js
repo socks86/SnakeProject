@@ -1,3 +1,6 @@
+var gameWidth = 32;
+var gameHeight = 16;
+
 module.exports.game = function(){
     this.players = [];
     this.addPlayer = function(playerId){
@@ -16,32 +19,55 @@ module.exports.game = function(){
         this.players = this.players.filter(function(el) { return el.playerId != playerId; });
     }
     
-    this.movePlayer = function(playerId,direction){
-        this.getPlayerById(playerId).move(direction);
-        this.getPlayerById(playerId).log();
+    this.turnPlayer = function(playerId,direction){
+        this.getPlayerById(playerId).setDirection(direction);
     };
     this.getGameState = function(){
         return this.players;
+    };
+    this.update = function(){
+        for (var i=0;i<this.players.length;i++){
+            this.players[i].update();
+        }
     };
 };
 
 snake = function(playerId){
     this.x = 1;
     this.y = 1;
+    this.direction = "left";
     this.playerId = playerId;
+    this.update=function(){
+        this.move(this.direction);
+    }
+    this.setDirection=function(direction){
+        this.direction = direction;
+    };
     this.move=function(direction){
         switch(direction){
             case "up":
                 this.y--;
+                if(this.y<0){
+                    this.y = gameHeight;
+                }
                 break;
             case "down":
                 this.y++;
+                if(this.y>gameHeight){
+                    this.y = 0;
+                }
                 break;
             case "left":
                 this.x--;
+                if(this.x<0){
+                    this.x = gameWidth-1;
+                }
                 break;
             case "right":
                 this.x++;
+                if(this.x>gameWidth-1){
+                    this.x = 0;
+                }
                 break;
         };
     }

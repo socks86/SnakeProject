@@ -4,16 +4,16 @@ document.addEventListener('keydown', handleKeypress);
 function handleKeypress(e){
   switch (e.code){
     case "ArrowUp":
-      socket.emit('moveRequest','up');
+      socket.emit('playerTurn','up');
       break;
     case "ArrowDown":
-      socket.emit('moveRequest','down');
+      socket.emit('playerTurn','down');
       break;  
     case "ArrowLeft":
-      socket.emit('moveRequest','left');
+      socket.emit('playerTurn','left');
       break;
     case "ArrowRight":
-      socket.emit('moveRequest','right');
+      socket.emit('playerTurn','right');
       break;
   };
 }

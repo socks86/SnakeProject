@@ -17,6 +17,14 @@ app.get('/', function(req, res){
 var nextPlayerId = 0;
 var game = new snakeGame.game();
 
+function loop(){
+  game.update();
+  io.emit('gameState',game.getGameState());
+  setTimeout(loop,250);
+}
+
+loop();
+
 io.on('connection', function(socket){
   console.log('A user connected.');
   console.log('Assigning player id '+nextPlayerId);
@@ -27,9 +35,8 @@ io.on('connection', function(socket){
     console.log('player id '+socket.playerId + 'disconnected');
     game.removePlayer(socket.playerId);
   });
-  socket.on('moveRequest', function(data){
-    game.movePlayer(socket.playerId,data);
-    io.emit('gameState',game.getGameState());
+  socket.on('playerTurn', function(data){
+    game.turnPlayer(socket.playerId,data);
   });
   // socket.on('clientMsg',function(data){
   //   io.emit('serverMsg',data);
