@@ -55,7 +55,11 @@ graphics.showGameState = function(gameState){
     for (var i=0;i<gameState.length;i++){
         var gameObject = gameState[i];
         //some switch statement to pass the gameobject to the right sprite create function
-        graphics.addSprite('../images/snake head.png',gameObject.x,gameObject.y);
+        graphics.addSprite('../images/snake head.png',gameObject.head.x,gameObject.head.y);
+        
+        gameObject.tail.forEach(segment =>{
+            graphics.addSprite('../images/snake segment.png',segment.x,segment.y);
+        });
     }
     graphics.draw();
 };

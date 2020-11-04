@@ -2,49 +2,60 @@ const GAME_WIDTH = 32;
 const GAME_HEIGHT = 16;
 
 class SnakeSegment{
-    constructor(){
-        this.x=0;
-        this.y=0;
+    constructor(x,y){
+        this.x=x;
+        this.y=y;
         this.color = 0;
     }
 }
 class Snake{
     constructor(playerId){
-        this.x = 1;
-        this.y = 1;
-        this.direction = "left";
+        this.head = new SnakeSegment(0,0);
+        this.tail = [];
+        this.direction = "right";
         this.playerId = playerId;
+        this.length = 0;
+    }
+    grow(){
+        this.length++;
+    }
+    shrink(){
+        this.length--;
     }
     setDirection(direction){
         this.direction = direction;
     }
     move(){
+        this.tail.push(new SnakeSegment(this.head.x,this.head.y));
         switch(this.direction){
             case "up":
-                this.y--;
-                if(this.y<0){
-                    this.y = GAME_HEIGHT;
+                this.head.y--;
+                if(this.head.y<0){
+                    this.head.y = GAME_HEIGHT;
                 }
                 break;
             case "down":
-                this.y++;
-                if(this.y>GAME_HEIGHT){
-                    this.y = 0;
+                this.head.y++;
+                if(this.head.y>GAME_HEIGHT){
+                    this.head.y = 0;
                 }
                 break;
             case "left":
-                this.x--;
-                if(this.x<0){
-                    this.x = GAME_WIDTH-1;
+                this.head.x--;
+                if(this.head.x<0){
+                    this.head.x = GAME_WIDTH-1;
                 }
                 break;
             case "right":
-                this.x++;
-                if(this.x>GAME_WIDTH-1){
-                    this.x = 0;
+                this.head.x++;
+                if(this.head.x>GAME_WIDTH-1){
+                    this.head.x = 0;
                 }
                 break;
         };
+        while (this.tail.length>this.length){
+            this.tail.shift();
+        }
     }
     update(){
         this.move();
@@ -75,6 +86,12 @@ module.exports.Game = class Game{
     }
     turnPlayer(playerId,direction){
         this.getPlayerById(playerId).setDirection(direction);
+    }
+    growPlayer(playerId){
+        this.getPlayerById(playerId).grow();
+    }
+    shrinkPlayer(playerId){
+        this.getPlayerById(playerId).shrink();
     }
     getGameState(){
         //var state;

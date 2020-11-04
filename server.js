@@ -33,11 +33,17 @@ io.on('connection', function(socket){
   game.addPlayer(nextPlayerId);
   nextPlayerId++;
   socket.on('disconnect', function(){
-    console.log('player id '+socket.playerId + 'disconnected');
+    console.log('player id '+socket.playerId + ' disconnected');
     game.removePlayer(socket.playerId);
   });
   socket.on('playerTurn', function(data){
     game.turnPlayer(socket.playerId,data);
+  });
+  socket.on('playerGrow', function(){
+    game.growPlayer(socket.playerId);
+  });
+  socket.on('playerShrink', function(){
+    game.shrinkPlayer(socket.playerId);
   });
 });
 
