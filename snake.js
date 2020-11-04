@@ -1,100 +1,89 @@
-var gameWidth = 32;
-var gameHeight = 16;
+const GAME_WIDTH = 32;
+const GAME_HEIGHT = 16;
 
-module.exports.game = function(){
-    this.players = [];
-    this.mobs=[];
-    this.items=[];
-    this.addPlayer = function(playerId){
-        this.players.push(
-            new snake(playerId)
-        );
-    };
-    this.getPlayerById = function(playerId){
-        for (var i=0;i<this.players.length;i++){
-            if (playerId == this.players[i].playerId){
-                return this.players[i];
-            }
-        }
-    };
-    this.removePlayer = function(playerId){
-        this.players = this.players.filter(function(el) { return el.playerId != playerId; });
+class SnakeSegment{
+    constructor(){
+        this.x=0;
+        this.y=0;
+        this.color = 0;
     }
-    
-    this.turnPlayer = function(playerId,direction){
-        this.getPlayerById(playerId).setDirection(direction);
-    };
-    this.getGameState = function(){
-        //var state;
-        //state.players = this.players //etc
-        return this.players;
-    };
-    this.update = function(){
-        for (var i=0;i<this.players.length;i++){
-            this.players[i].update();
-        }
-    };
-};
-
-var snake = function(playerId){
-    this.x = 1;
-    this.y = 1;
-    this.direction = "left";
-    this.playerId = playerId;
-    this.update=function(){
-        this.move(this.direction);
+}
+class Snake{
+    constructor(playerId){
+        this.x = 1;
+        this.y = 1;
+        this.direction = "left";
+        this.playerId = playerId;
     }
-    this.setDirection=function(direction){
+    setDirection(direction){
         this.direction = direction;
-    };
-    this.move=function(direction){
-        switch(direction){
+    }
+    move(){
+        switch(this.direction){
             case "up":
                 this.y--;
                 if(this.y<0){
-                    this.y = gameHeight;
+                    this.y = GAME_HEIGHT;
                 }
                 break;
             case "down":
                 this.y++;
-                if(this.y>gameHeight){
+                if(this.y>GAME_HEIGHT){
                     this.y = 0;
                 }
                 break;
             case "left":
                 this.x--;
                 if(this.x<0){
-                    this.x = gameWidth-1;
+                    this.x = GAME_WIDTH-1;
                 }
                 break;
             case "right":
                 this.x++;
-                if(this.x>gameWidth-1){
+                if(this.x>GAME_WIDTH-1){
                     this.x = 0;
                 }
                 break;
         };
     }
-    this.log = function(){
-        console.log("snake "+this.playerId +" is at coords x: "+this.x+" y: "+this.y);
+    update(){
+        this.move();
     }
 }
-var mob = function(){
-    this.x=0;
-    this.y=0;
-    this.update = function(){};
-}
-var item = function(){
-    this.x=0;
-    this.y=0;
-    this.update = function(){
-    };   
-}
-var itemDecorator = function(thing){
-    this.x=0;
-    this.y=0;
-    this.update = function(){
-        //do stuff
 
-    };   
+module.exports.Game = class Game{
+    constructor(){
+        this.players = [];
+        this.mobs=[];
+        this.items=[];
+    }
+    addPlayer(playerId){
+        this.players.push(
+            new Snake(playerId)
+        );
+    };
+    //should be error catching for player not found
+    getPlayerById(playerId){
+        for (var i=0;i<this.players.length;i++){
+            if (playerId == this.players[i].playerId){
+                return this.players[i];
+            }
+        }
+    };
+    removePlayer(playerId){
+        this.players = this.players.filter(function(el) { return el.playerId != playerId; });
+    }
+    turnPlayer(playerId,direction){
+        this.getPlayerById(playerId).setDirection(direction);
+    }
+    getGameState(){
+        //var state;
+        //state.players = this.players //etc
+        return this.players;
+    }
+    update(){
+        for (var i=0;i<this.players.length;i++){
+            this.players[i].update();
+        }
+    }
 }

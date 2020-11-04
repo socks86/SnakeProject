@@ -16,7 +16,7 @@ app.get('/', function(req, res){
 });
 
 var nextPlayerId = 0;
-var game = new snakeGame.game();
+var game = new snakeGame.Game();
 
 function loop(){
   game.update();
