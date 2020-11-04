@@ -37,13 +37,15 @@ graphics.draw = function(){
 };
 
 graphics.addSprite = function(image,x,y){
+    //needs color, angle in radians 1/2PI
+    //animations?
     var newSprite = [];
     newSprite.image = image;
     newSprite.x =x;
     newSprite.y = y;
     this.sprites.push(newSprite);
 };
-
+//different for other objects
 graphics.makeSnakeSpriteFrame = function(){};
 graphics.makeItemSpriteFrame = function(){};
 graphics.makeMobSpriteFrame = function(){};
@@ -58,10 +60,10 @@ graphics.showGameState = function(gameState){
     graphics.draw();
 };
 
-function testGraphics(){
-    graphics.sprites = [];
-    for(var i=0;i<100;i++){
-        graphics.addSprite('../images/snake head.png',Math.floor(Math.random()*32),Math.floor(Math.random()*18));
-    }
-    graphics.draw();
-}
+// function testGraphics(){
+//     graphics.sprites = [];
+//     for(var i=0;i<100;i++){
+//         graphics.addSprite('../images/snake head.png',Math.floor(Math.random()*32),Math.floor(Math.random()*18));
+//     }
+//     graphics.draw();
+// }

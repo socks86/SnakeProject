@@ -3,6 +3,8 @@ var gameHeight = 16;
 
 module.exports.game = function(){
     this.players = [];
+    this.mobs=[];
+    this.items=[];
     this.addPlayer = function(playerId){
         this.players.push(
             new snake(playerId)
@@ -23,6 +25,8 @@ module.exports.game = function(){
         this.getPlayerById(playerId).setDirection(direction);
     };
     this.getGameState = function(){
+        //var state;
+        //state.players = this.players //etc
         return this.players;
     };
     this.update = function(){
@@ -32,7 +36,7 @@ module.exports.game = function(){
     };
 };
 
-snake = function(playerId){
+var snake = function(playerId){
     this.x = 1;
     this.y = 1;
     this.direction = "left";
@@ -74,4 +78,23 @@ snake = function(playerId){
     this.log = function(){
         console.log("snake "+this.playerId +" is at coords x: "+this.x+" y: "+this.y);
     }
+}
+var mob = function(){
+    this.x=0;
+    this.y=0;
+    this.update = function(){};
+}
+var item = function(){
+    this.x=0;
+    this.y=0;
+    this.update = function(){
+    };   
+}
+var itemDecorator = function(thing){
+    this.x=0;
+    this.y=0;
+    this.update = function(){
+        //do stuff
+
+    };   
 }

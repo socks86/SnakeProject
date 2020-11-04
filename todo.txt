@@ -1,0 +1,14 @@
+modify snake.js snake 'class' snakes need to get longer //chris
+modify snake.js snake 'class' snakes need to have a death method
+add collectable items to snake.js  //jared 
+modify graphics.js to render apples
+different color snakes
+
+refactor server files to use es6 classes
+
+add mobs to snake.js
+score
+pause?
+add client modal for player name and color
+have total number snakes if already 8 players 
+8 specific colors

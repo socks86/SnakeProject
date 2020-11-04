@@ -16,4 +16,6 @@ function handleKeypress(e){
       socket.emit('playerTurn','right');
       break;
   };
+  //if statement to support old browsers
 }
+//add event listeners for buttons

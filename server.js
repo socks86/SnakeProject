@@ -6,6 +6,7 @@ var http = require('http').Server(app);
 let io = require('socket.io')(http);
 const request = require('request');
 
+//custom includes
 var snakeGame = require('./snake.js');
 //express client files
 app.use(express.static('public'));
@@ -38,14 +39,6 @@ io.on('connection', function(socket){
   socket.on('playerTurn', function(data){
     game.turnPlayer(socket.playerId,data);
   });
-  // socket.on('clientMsg',function(data){
-  //   io.emit('serverMsg',data);
-  //   pushOldMsg(data);
-  // });
-  // socket.on('announce',function(data){
-  //   socket.broadcast.emit('serverMsg',data); pushOldMsg(data);
-  // });
-  // socket.on('requestOld',function(){ writeOld(socket);});
 });
 
 http.listen(process.env.PORT || 3000, function(){});
