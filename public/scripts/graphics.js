@@ -29,20 +29,35 @@ graphics.draw = function(){
         sprite.height = app.renderer.height/this.height;
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;
-        //sprite.rotation = s.rotation;
+        sprite.angle = s.rotation;
         sprite.position.x = (s.x * sprite.width)+sprite.width/2;
         sprite.position.y = (s.y * sprite.height)+sprite.height/2;
+        sprite.tint = '0xFF0000';
         app.stage.addChild(sprite);
     }
 };
 
-graphics.addSprite = function(image,x,y){
+graphics.addSprite = function(image,x,y,direction){
     //needs color, angle in radians 1/2PI
     //animations?
     var newSprite = [];
     newSprite.image = image;
     newSprite.x =x;
     newSprite.y = y;
+    switch (direction){
+        case 'down':
+            newSprite.rotation = 90;
+            break;
+        case 'left':
+            newSprite.rotation = 180;
+            break;
+        case 'up':
+            newSprite.rotation = 270;
+            break;
+        default:
+            newSprite.rotation = 0;
+            break;
+    };
     this.sprites.push(newSprite);
 };
 //different for other objects
@@ -55,10 +70,10 @@ graphics.showGameState = function(gameState){
     for (var i=0;i<gameState.length;i++){
         var gameObject = gameState[i];
         //some switch statement to pass the gameobject to the right sprite create function
-        graphics.addSprite('../images/snake head.png',gameObject.head.x,gameObject.head.y);
+        graphics.addSprite('../images/snake '+gameObject.head.image+'.png',gameObject.head.x,gameObject.head.y,gameObject.head.direction);
         
         gameObject.tail.forEach(segment =>{
-            graphics.addSprite('../images/snake segment.png',segment.x,segment.y);
+            graphics.addSprite('../images/snake '+segment.image+'.png',segment.x,segment.y,segment.direction);
         });
     }
     graphics.draw();

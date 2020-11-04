@@ -2,7 +2,9 @@ const GAME_WIDTH = 32;
 const GAME_HEIGHT = 16;
 
 class SnakeSegment{
-    constructor(x,y){
+    constructor(x,y,direction,image){
+        this.direction=direction;
+        this.image = image;
         this.x=x;
         this.y=y;
         this.color = 0;
@@ -10,9 +12,9 @@ class SnakeSegment{
 }
 class Snake{
     constructor(playerId){
-        this.head = new SnakeSegment(0,0);
+        this.head = new SnakeSegment(0,0,'right','head');
         this.tail = [];
-        this.direction = "right";
+        this.direction = 'right';
         this.playerId = playerId;
         this.length = 0;
     }
@@ -26,28 +28,37 @@ class Snake{
         this.direction = direction;
     }
     move(){
-        this.tail.push(new SnakeSegment(this.head.x,this.head.y));
+        
+        if(this.direction != this.head.direction){
+            this.tail.push(new SnakeSegment(this.head.x,this.head.y,this.head.direction,'corner'));
+        }else{
+            this.tail.push(new SnakeSegment(this.head.x,this.head.y,this.head.direction,'segment'));
+        }
         switch(this.direction){
             case "up":
                 this.head.y--;
+                this.head.direction = 'up';
                 if(this.head.y<0){
                     this.head.y = GAME_HEIGHT;
                 }
                 break;
             case "down":
                 this.head.y++;
+                this.head.direction = 'down';
                 if(this.head.y>GAME_HEIGHT){
                     this.head.y = 0;
                 }
                 break;
             case "left":
                 this.head.x--;
+                this.head.direction = 'left';
                 if(this.head.x<0){
                     this.head.x = GAME_WIDTH-1;
                 }
                 break;
             case "right":
                 this.head.x++;
+                this.head.direction = 'right';
                 if(this.head.x>GAME_WIDTH-1){
                     this.head.x = 0;
                 }
@@ -55,6 +66,9 @@ class Snake{
         };
         while (this.tail.length>this.length){
             this.tail.shift();
+            if(this.tail.length){
+                this.tail[0].image = 'tail';
+            }
         }
     }
     update(){
