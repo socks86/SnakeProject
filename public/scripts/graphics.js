@@ -86,6 +86,7 @@ graphics.makeItemSpriteFrame = function(){};
 graphics.makeMobSpriteFrame = function(){};
 
 graphics.showGameState = function(gameState){
+    console.log(gameState);
     this.sprites=[];
     //make player sprites
     for (var i=0;i<gameState.players.length;i++){
@@ -96,6 +97,10 @@ graphics.showGameState = function(gameState){
         gameObject.tail.forEach(segment =>{
             graphics.addSprite('../images/pixel.png',segment.x,segment.y,segment.color,segment.direction);
         });
+    }
+    for (var i=0;i<gameState.foods.length;i++){
+        var gameObject = gameState.foods[i];
+        graphics.addSprite('../images/apple.png',gameObject.x,gameObject.y,'0xFFFFFF','right');
     }
     //make item sprites
     //make mob sprites

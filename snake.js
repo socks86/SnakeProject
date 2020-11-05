@@ -121,19 +121,33 @@ class Snake{
         this.move();
     }
 }
-
+class Food{
+    constructor(){
+        this.x = 0;
+        this.y = 0;
+    }
+    placeSelf(){
+        this.x = Math.floor(Math.random()*GAME_WIDTH);
+        this.y = Math.floor(Math.random()*GAME_HEIGHT);
+    }
+}
 module.exports.Game = class Game{
     constructor(){
         this.players = [];
         this.highScores = [];
         this.mobs=[];
-        this.items=[];
+        this.foods=[];
     }
     addPlayer(playerId,socketId,name,color){
         this.players.push(
             new Snake(playerId,socketId,name,color)
         );
     };
+    addFood(){
+        var f = new Food();
+        f.placeSelf();
+        this.foods.push(f)
+    }
     //should be error catching for player not found
     getPlayerById(playerId){
         for (var i=0;i<this.players.length;i++){
@@ -174,10 +188,13 @@ module.exports.Game = class Game{
         return this;
     }
     update(){
+        if(Math.random()>.9){
+            this.addFood();
+        }
         for (var i=0;i<this.players.length;i++){
             this.players[i].update();
+            var currentHead = this.players[i].head;
             for (var j=0;j<this.players.length;j++){
-                var currentHead = this.players[i].head;
                 var snake = this.players[j];
                 if (j!=i && currentHead.collides(snake.head)){
                      this.removePlayer(this.players[i].playerId);
@@ -186,6 +203,12 @@ module.exports.Game = class Game{
                     if(currentHead.collides(snake.tail[k])){
                         this.removePlayer(this.players[i].playerId);
                     }
+                }
+            }
+            for (var j=0;j<this.foods.length;j++){
+                if(currentHead.collides(this.foods[j])){
+                    this.growPlayer(this.players[i].playerId);
+                    this.foods.splice(j,1);
                 }
             }
         }
