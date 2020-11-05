@@ -10,7 +10,7 @@ window.addEventListener('resize', resize);
 // Resize function window
 function resize() {
 	// Resize the renderer
-	app.renderer.resize(window.innerWidth, window.innerHeight);
+	app.renderer.resize(window.innerHeight*(16/9), window.innerHeight);
 }
 //resize before 1st render
 resize();
@@ -25,39 +25,59 @@ graphics.draw = function(){
     for (var i = 0;i<this.sprites.length;i++){
         var s = this.sprites[i];
         var sprite = new PIXI.Sprite.from(s.image);
-        sprite.width = app.renderer.width/this.width;
+        sprite.width = app.renderer.height/this.height;
         sprite.height = app.renderer.height/this.height;
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;
-        sprite.angle = s.rotation;
         sprite.position.x = (s.x * sprite.width)+sprite.width/2;
         sprite.position.y = (s.y * sprite.height)+sprite.height/2;
-        sprite.tint = '0xFF0000';
+        sprite.angle = s.angle;
+        sprite.tint = s.tint;
         app.stage.addChild(sprite);
     }
 };
 
-graphics.addSprite = function(image,x,y,direction){
-    //needs color, angle in radians 1/2PI
-    //animations?
+graphics.addSprite = function(image,x,y,color,direction){
+
     var newSprite = [];
     newSprite.image = image;
     newSprite.x =x;
     newSprite.y = y;
-    switch (direction){
-        case 'down':
-            newSprite.rotation = 90;
+    switch (color){
+        case 'red':
+            newSprite.tint = '0xFF0000';
             break;
-        case 'left':
-            newSprite.rotation = 180;
+        case 'orange':
+            newSprite.tint = '0xFF5E13';
             break;
-        case 'up':
-            newSprite.rotation = 270;
+        case 'yellow':
+            newSprite.tint = '0xFFFF00';
+            break;
+        case 'green':
+            newSprite.tint = '0x00FF00';
+            break;
+        case 'blue':
+            newSprite.tint = '0x0000FF';
+            break;
+        case 'purple':
+            newSprite.tint = '0xFF00FF';
             break;
         default:
-            newSprite.rotation = 0;
+            newSprite.tint = '0xFFFFFF';   
+    }
+    switch (direction){
+        case 'down':
+            newSprite.angle = 90;
             break;
-    };
+        case 'left':
+            newSprite.angle = 180;
+            break;
+        case 'up':
+            newSprite.angle = 270;
+            break;
+        default:
+            newSprite.angle = 0;
+    }
     this.sprites.push(newSprite);
 };
 //different for other objects
@@ -70,10 +90,10 @@ graphics.showGameState = function(gameState){
     for (var i=0;i<gameState.length;i++){
         var gameObject = gameState[i];
         //some switch statement to pass the gameobject to the right sprite create function
-        graphics.addSprite('../images/snake '+gameObject.head.image+'.png',gameObject.head.x,gameObject.head.y,gameObject.head.direction);
+        graphics.addSprite('../images/pixelHead.png',gameObject.head.x,gameObject.head.y,gameObject.head.color,gameObject.head.direction);
         
         gameObject.tail.forEach(segment =>{
-            graphics.addSprite('../images/snake '+segment.image+'.png',segment.x,segment.y,segment.direction);
+            graphics.addSprite('../images/pixel.png',segment.x,segment.y,segment.color,segment.direction);
         });
     }
     graphics.draw();

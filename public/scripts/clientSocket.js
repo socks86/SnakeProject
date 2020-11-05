@@ -5,10 +5,15 @@ var socket = io();
 function addSocketEvents(socket){
   //for chat.js
   socket.on('gameState',function(data){
-    //console.log(data);
+    showCurrentPlayers(data);
     graphics.showGameState(data);
   });
-
+  socket.on('gameOver',function(){
+    toggleMenu();
+  });
+  socket.on('highScores',function(data){
+    showHighScores(data);
+  });
 }
 //add the event handlers to the client socket
 addSocketEvents(socket);

@@ -9,6 +9,51 @@
 </head>
 
 <body>
+  <div id="menu">
+    <div class="menuPanel" id="title">
+      <p>Battle Snake</p>
+      <p>By Duffy and Jared</p>
+    </div>
+    <div class="menuPanel" id="currentPlayers">
+    </div>
+    <div class="menuPanel" id="nameSelect">
+      <p>Enter Your Name</p>
+      <input type="text" id="name" />
+      <button onclick="joinGame()">Play</button>
+    </div>
+    <div class="menuPanel" id="highScores">
+      <p>High Scores</p>
+    </div>
+    <div class="menuPanel" id="colorSelect">
+      <p>Select Your Color</p>
+      <div id="colorContainer">
+        <label>
+          <input class="radio" name="color" type="radio" id="red" value='red'/>
+          <div class="radioControl" id="redControl"></div>
+        </label>
+        <label>
+          <input class="radio" name="color" type="radio" id="orange" value='orange'/>
+          <div class="radioControl" id="orangeControl"></div>
+        </label>
+        <label>
+          <input class="radio" name="color" type="radio" id="yellow" value='yellow'/>
+          <div class="radioControl" id="yellowControl"></div>
+        </label>
+        <label>
+          <input class="radio" name="color" type="radio" id="green" value='green'/>
+          <div class="radioControl" id="greenControl"></div>
+        </label>
+        <label>
+          <input class="radio" name="color" type="radio" id="blue" value='blue'/>
+          <div class="radioControl" id="blueControl"></div>
+        </label>
+        <label>
+          <input class="radio" name="color" type="radio" id="purple" value='purple'/>
+          <div class="radioControl" id="purpleControl"></div>
+        </label>
+      </div>
+    </div>
+  </div>
 	<script src="scripts/clientSocket.js"></script>
   <script src="scripts/inputHandler.js"></script>
   <script src="scripts/graphics.js"></script>

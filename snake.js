@@ -1,51 +1,74 @@
-const GAME_WIDTH = 32;
-const GAME_HEIGHT = 16;
+const e = require("express");
 
+const GAME_WIDTH = 32;
+const GAME_HEIGHT = 18;
+class HighScore{
+    constructor(name,color,length){
+        this.name = name;
+        this.color = color;
+        this.length = length;
+    }
+    compare(score){
+        if (this.length>score.length){
+            return true;
+        }
+        return false;
+    }
+}
 class SnakeSegment{
-    constructor(x,y,direction,image){
+    constructor(x,y,direction,image,color){
         this.direction=direction;
         this.image = image;
         this.x=x;
         this.y=y;
-        this.color = 0;
+        this.color = color;
+    }
+    collides(segment){
+        if(this.x == segment.x && this.y == segment.y ){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 class Snake{
-    constructor(playerId){
-        this.head = new SnakeSegment(0,0,'right','head');
+    constructor(playerId,socketId,name,color){
+        this.head = new SnakeSegment(0,0,'right','head',color);
         this.tail = [];
+        this.name = name;
+        this.color = color;
         this.direction = 'right';
         this.playerId = playerId;
+        this.socket = socketId;
         this.length = 0;
     }
     grow(){
         this.length++;
     }
     shrink(){
-        this.length--;
+        if (this.length>0){
+            this.length--;
+        }
     }
     setDirection(direction){
         this.direction = direction;
     }
     move(){
+        this.tail.push(new SnakeSegment(this.head.x,this.head.y,this.direction,'pixel',this.color));
         
-        if(this.direction != this.head.direction){
-            this.tail.push(new SnakeSegment(this.head.x,this.head.y,this.head.direction,'corner'));
-        }else{
-            this.tail.push(new SnakeSegment(this.head.x,this.head.y,this.head.direction,'segment'));
-        }
         switch(this.direction){
             case "up":
                 this.head.y--;
                 this.head.direction = 'up';
                 if(this.head.y<0){
-                    this.head.y = GAME_HEIGHT;
+                    this.head.y = GAME_HEIGHT-1;
                 }
                 break;
             case "down":
                 this.head.y++;
                 this.head.direction = 'down';
-                if(this.head.y>GAME_HEIGHT){
+                if(this.head.y>GAME_HEIGHT-1){
                     this.head.y = 0;
                 }
                 break;
@@ -67,7 +90,7 @@ class Snake{
         while (this.tail.length>this.length){
             this.tail.shift();
             if(this.tail.length){
-                this.tail[0].image = 'tail';
+                this.tail[0].image = 'pixel';
             }
         }
     }
@@ -79,12 +102,13 @@ class Snake{
 module.exports.Game = class Game{
     constructor(){
         this.players = [];
+        this.highScores = [];
         this.mobs=[];
         this.items=[];
     }
-    addPlayer(playerId){
+    addPlayer(playerId,socketId,name,color){
         this.players.push(
-            new Snake(playerId)
+            new Snake(playerId,socketId,name,color)
         );
     };
     //should be error catching for player not found
@@ -94,18 +118,32 @@ module.exports.Game = class Game{
                 return this.players[i];
             }
         }
+        return -1;
     };
     removePlayer(playerId){
-        this.players = this.players.filter(function(el) { return el.playerId != playerId; });
+        //this function is added at runtime in server.js
+        var p = this.getPlayerById(playerId);
+        if(p != -1){
+            var score = new HighScore(p.name,p.color,p.length);
+            this.checkHighScore(score);
+            this.emitGameOver(p.socket);
+            this.players = this.players.filter(function(el) { return el.playerId != playerId; });
+        }
     }
     turnPlayer(playerId,direction){
-        this.getPlayerById(playerId).setDirection(direction);
+        if(this.getPlayerById(playerId) != -1){
+            this.getPlayerById(playerId).setDirection(direction);
+        }
     }
     growPlayer(playerId){
-        this.getPlayerById(playerId).grow();
+        if(this.getPlayerById(playerId) != -1){
+            this.getPlayerById(playerId).grow();
+        }
     }
     shrinkPlayer(playerId){
-        this.getPlayerById(playerId).shrink();
+        if(this.getPlayerById(playerId) != -1){
+            this.getPlayerById(playerId).shrink();
+        }
     }
     getGameState(){
         //var state;
@@ -115,6 +153,26 @@ module.exports.Game = class Game{
     update(){
         for (var i=0;i<this.players.length;i++){
             this.players[i].update();
+            for (var j=0;j<this.players.length;j++){
+                var currentHead = this.players[i].head;
+                var snake = this.players[j];
+                if (j!=i && currentHead.collides(snake.head)){
+                     this.removePlayer(this.players[i].playerId);
+                }
+                for(var k=0;k<snake.tail.length;k++){
+                    if(currentHead.collides(snake.tail[k])){
+                        this.removePlayer(this.players[i].playerId);
+                    }
+                }
+            }
         }
+    }
+    checkHighScore(score){
+        console.log('game is checking high scores');
+        this.highScores.push(score);
+        this.highScores.sort((a,b) =>(b.length - a.length));
+        this.highScores = this.highScores.slice(0,3);
+        //another socket function added at runtime in server.js
+        this.emitHighScores();
     }
 }

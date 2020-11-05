@@ -1,5 +1,174 @@
-html,body,canvas{
+@font-face {
+  font-family: Pixel;
+  src: url("Pixel\ NES.otf") format("opentype");
+}
+html,body{
+    font-family: Pixel;
     margin:0;
     padding:0;
     overflow: hidden;
   }
+#menu{
+  position: absolute;
+  left:15%;
+  top:15%;
+  width: 70%;
+  height:70%;
+  background-color: rgba(0,0,0,.5);;
+}
+canvas{
+  padding:0;
+  margin:auto;
+  display:block;
+}
+.menuPanel{
+  position: absolute;
+  background-color: rgba(115, 115, 245, .7);
+}
+p{
+  text-align: center;
+  font-size: 2em;
+  margin-top:2%;
+  margin-bottom: 0%;
+}
+#title{
+  width: 65%;
+  height:20%;
+}
+#currentPlayers{
+  left:70%;
+  width:30%;
+  height:60%;
+}
+#highScores{
+  left: 35%;
+  top: 25%;
+  width: 30%;
+  height: 35%;
+}
+.playerInfo{
+  width:100%;
+  margin-top: 3%;
+  font-size: 1.5em;
+  padding:0;
+}
+.playerColor{
+  height:1em;
+  width: 7%;
+  margin-left:2%;
+  margin-right:2%;
+  display:inline-block;
+  padding:0;
+}
+.playerName{
+  width:40%;
+  display:inline-block;
+  padding:0;
+}
+.playerScore{
+  widows: 20%;
+  display:inline-block;
+  padding:0;
+}
+#nameSelect{
+  top: 25%;
+  width: 30%;
+  height: 35%;
+}
+#nameSelect p{
+ margin-top: 10%; 
+}
+#nameSelect input{
+  width:90%;
+  position: absolute;
+  left:5%;
+  top:40%;
+  font-family: pixel;
+  height:20%;
+  font-size: 2em;
+  box-sizing: border-box;
+}
+#nameSelect button{
+  width:50%;
+  position: absolute;
+  left:25%;
+  top:70%;
+  font-family: pixel;
+  height:20%;
+  font-size: 2em;
+  box-sizing: border-box;
+}
+#colorSelect{
+  top:65%;
+  width:100%;
+  height:35%;
+}
+#colorContainer{
+  height: 100%;
+  width:60%;
+  margin:auto;
+}
+
+label{
+  width:15%;
+  height:60%;
+  display:inline-block;
+  margin:auto;
+  padding:0;
+}
+.radio{
+  width:0px;
+  height:0px;
+  opacity:0;
+  margin:0;
+  padding:0;
+}
+.radioHighlight{
+  border: white 15px solid;
+  box-sizing: border-box;
+}
+.radioControl{
+  width:100%;
+  height: 100%;
+  margin:0;
+  padding:0;
+}
+.radioControl:hover{
+  cursor: pointer;
+}
+#redControl{
+  background-color:#FF0000;
+}
+#orangeControl{
+  background-color:#FF5E13;
+}
+#yellowControl{
+  background-color:#FFFF00;
+}
+#greenControl{
+  background-color:#00FF00;
+}
+#blueControl{
+  background-color:#0000FF;
+}
+#purpleControl{
+  background-color:#FF00FF;
+}
+.redColor{
+  background-color:#FF0000;
+}
+.orangeColor{
+  background-color:#FF5E13;
+}
+.yellowColor{
+  background-color:#FFFF00;
+}
+.greenColor{
+  background-color:#00FF00;
+}
+.blueColor{
+  background-color:#0000FF;
+}
+.purpleColor{
+  background-color:#FF00FF;
+}

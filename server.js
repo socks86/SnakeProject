@@ -18,6 +18,13 @@ app.get('/', function(req, res){
 var nextPlayerId = 0;
 var game = new snakeGame.Game();
 
+game.emitGameOver = function(socket){
+  io.to(socket).emit('gameOver');
+}
+game.emitHighScores = function(){
+  io.emit('highScores',game.highScores);
+}
+
 function loop(){
   game.update();
   io.emit('gameState',game.getGameState());
@@ -26,12 +33,18 @@ function loop(){
 
 loop();
 
+
 io.on('connection', function(socket){
   console.log('A user connected.');
   console.log('Assigning player id '+nextPlayerId);
   socket.playerId = nextPlayerId;
-  game.addPlayer(nextPlayerId);
   nextPlayerId++;
+  socket.on('playerJoin',function(data){
+    game.addPlayer(socket.playerId,socket.id,data.name,data.color);
+  });
+  socket.on('playerDie',function(){
+    game.removePlayer(socket.playerId);
+  });
   socket.on('disconnect', function(){
     console.log('player id '+socket.playerId + ' disconnected');
     game.removePlayer(socket.playerId);
@@ -45,6 +58,7 @@ io.on('connection', function(socket){
   socket.on('playerShrink', function(){
     game.shrinkPlayer(socket.playerId);
   });
+  game.emitHighScores();
 });
 
 http.listen(process.env.PORT || 3000, function(){});
