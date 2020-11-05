@@ -42,6 +42,29 @@ class Snake{
         this.playerId = playerId;
         this.socket = socketId;
         this.length = 0;
+        this.generatePosDir();
+    }
+    generatePosDir(){
+        var x = Math.floor(Math.random()*GAME_WIDTH);
+        var y = Math.floor(Math.random()*GAME_HEIGHT);
+        var dir;
+        switch (Math.floor(Math.random()*4)){
+            case 0:
+                dir = 'right';
+                break;
+            case 1:
+                dir = 'down';
+                break;
+            case 2:
+                dir = 'left';
+                break;
+            case 3:
+                dir = 'up';
+                break;
+        };
+        this.head.x = x;
+        this.head.y = y;
+        this.direction = dir;
     }
     grow(){
         this.length++;
