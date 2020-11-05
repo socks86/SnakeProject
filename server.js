@@ -26,9 +26,16 @@ game.emitHighScores = function(){
 }
 
 function loop(){
+  var timestamp = Date.now();
+  //add some deltatime thing
   game.update();
   io.emit('gameState',game.getGameState());
-  setTimeout(loop,250);
+  var elapsed = Date.now()-timestamp;
+  var timeout = 250 - elapsed;
+  if (timeout>0){
+    setTimeout(loop,timeout);
+  }
+  
 }
 
 loop();

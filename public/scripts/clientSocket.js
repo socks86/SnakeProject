@@ -5,7 +5,7 @@ var socket = io();
 function addSocketEvents(socket){
   //for chat.js
   socket.on('gameState',function(data){
-    showCurrentPlayers(data);
+    showCurrentPlayers(data.players);
     graphics.showGameState(data);
   });
   socket.on('gameOver',function(){

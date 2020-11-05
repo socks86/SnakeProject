@@ -87,8 +87,9 @@ graphics.makeMobSpriteFrame = function(){};
 
 graphics.showGameState = function(gameState){
     this.sprites=[];
-    for (var i=0;i<gameState.length;i++){
-        var gameObject = gameState[i];
+    //make player sprites
+    for (var i=0;i<gameState.players.length;i++){
+        var gameObject = gameState.players[i];
         //some switch statement to pass the gameobject to the right sprite create function
         graphics.addSprite('../images/pixelHead.png',gameObject.head.x,gameObject.head.y,gameObject.head.color,gameObject.head.direction);
         
@@ -96,6 +97,10 @@ graphics.showGameState = function(gameState){
             graphics.addSprite('../images/pixel.png',segment.x,segment.y,segment.color,segment.direction);
         });
     }
+    //make item sprites
+    //make mob sprites
+    //for gameState.enemies.length?
+
     graphics.draw();
 };
 

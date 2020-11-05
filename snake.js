@@ -148,7 +148,7 @@ module.exports.Game = class Game{
     getGameState(){
         //var state;
         //state.players = this.players //etc
-        return this.players;
+        return this;
     }
     update(){
         for (var i=0;i<this.players.length;i++){
@@ -168,7 +168,6 @@ module.exports.Game = class Game{
         }
     }
     checkHighScore(score){
-        console.log('game is checking high scores');
         this.highScores.push(score);
         this.highScores.sort((a,b) =>(b.length - a.length));
         this.highScores = this.highScores.slice(0,3);
