@@ -143,16 +143,6 @@ class Snake{
         this.move();
     }
 }
-class Food{
-    constructor(){
-        this.x = 0;
-        this.y = 0;
-    }
-    placeSelf(){
-        this.x = Math.floor(Math.random()*GAME_WIDTH);
-        this.y = Math.floor(Math.random()*GAME_HEIGHT);
-    }
-}
 module.exports.Game = class Game{
     constructor(){
         this.players = [];
@@ -165,11 +155,6 @@ module.exports.Game = class Game{
             new Snake(playerId,socketId,name,color)
         );
     };
-    addFood(){
-        var f = new Food();
-        f.placeSelf();
-        this.foods.push(f)
-    }
     //should be error catching for player not found
     getPlayerById(playerId){
         for (var i=0;i<this.players.length;i++){
@@ -210,9 +195,6 @@ module.exports.Game = class Game{
         return this;
     }
     update(){
-        if(Math.random()>.85){
-            this.addFood();
-        }
         for (var i=0;i<this.players.length;i++){
             this.players[i].update();
             var currentHead = this.players[i].head;
