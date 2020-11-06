@@ -75,7 +75,29 @@ class Snake{
         }
     }
     setDirection(direction){
-        this.direction = direction;
+        switch (direction){
+            case 'right':
+                if(this.direction != 'left'){
+                    this.direction = direction;
+                }
+                break;
+            case 'left':
+                if(this.direction != 'right'){
+                    this.direction = direction;
+                }
+                break;
+            case 'up':
+                if(this.direction != 'down'){
+                    this.direction = direction;
+                }
+                break;
+            case 'down':
+                if(this.direction != 'up'){
+                    this.direction = direction;
+                }
+                break;
+        };
+        
     }
     move(){
         this.tail.push(new SnakeSegment(this.head.x,this.head.y,this.direction,'pixel',this.color));
@@ -188,7 +210,7 @@ module.exports.Game = class Game{
         return this;
     }
     update(){
-        if(Math.random()>.9){
+        if(Math.random()>.85){
             this.addFood();
         }
         for (var i=0;i<this.players.length;i++){
