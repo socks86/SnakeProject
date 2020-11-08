@@ -299,6 +299,9 @@ module.exports.Game = class Game{
         this.items=[];
     }
     addPlayer(playerId,socketId,name,color){
+        if (this.players.length == 0){
+            this.items = [];
+        }
         this.players.push(
             new Snake(playerId,socketId,name,color)
         );
