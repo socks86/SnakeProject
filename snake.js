@@ -39,6 +39,7 @@ class Snake{
         this.name = name;
         this.color = color;
         this.direction = 'right';
+        this.lastDirection='right';
         this.playerId = playerId;
         this.socket = socketId;
         this.length = 0;
@@ -65,6 +66,7 @@ class Snake{
         this.head.x = x;
         this.head.y = y;
         this.direction = dir;
+        this.lastDirection = dir;
     }
     grow(){
         this.length++;
@@ -77,22 +79,22 @@ class Snake{
     setDirection(direction){
         switch (direction){
             case 'right':
-                if(this.direction != 'left'){
+                if(this.lastDirection != 'left'){
                     this.direction = direction;
                 }
                 break;
             case 'left':
-                if(this.direction != 'right'){
+                if(this.lastDirection != 'right'){
                     this.direction = direction;
                 }
                 break;
             case 'up':
-                if(this.direction != 'down'){
+                if(this.lastDirection != 'down'){
                     this.direction = direction;
                 }
                 break;
             case 'down':
-                if(this.direction != 'up'){
+                if(this.lastDirection != 'up'){
                     this.direction = direction;
                 }
                 break;
@@ -106,6 +108,7 @@ class Snake{
             case "up":
                 this.head.y--;
                 this.head.direction = 'up';
+                this.lastDirection = 'up';
                 if(this.head.y<0){
                     this.head.y = GAME_HEIGHT-1;
                 }
@@ -113,6 +116,7 @@ class Snake{
             case "down":
                 this.head.y++;
                 this.head.direction = 'down';
+                this.lastDirection = 'down';
                 if(this.head.y>GAME_HEIGHT-1){
                     this.head.y = 0;
                 }
@@ -120,6 +124,7 @@ class Snake{
             case "left":
                 this.head.x--;
                 this.head.direction = 'left';
+                this.lastDirection = 'left';
                 if(this.head.x<0){
                     this.head.x = GAME_WIDTH-1;
                 }
@@ -127,6 +132,7 @@ class Snake{
             case "right":
                 this.head.x++;
                 this.head.direction = 'right';
+                this.lastDirection = 'right';
                 if(this.head.x>GAME_WIDTH-1){
                     this.head.x = 0;
                 }
@@ -146,8 +152,8 @@ class Snake{
 
 class Apple{
     constructor(){
-        this.x = Math.floor((Math.random() * 32) + 1);
-        this.y = Math.floor((Math.random() * 18) + 1);
+        this.x = Math.floor((Math.random() * 32));
+        this.y = Math.floor((Math.random() * 18));
     }
     collides(segment){
         if(this.x == segment.x && this.y == segment.y){

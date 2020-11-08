@@ -27,7 +27,7 @@ canvas{
 }
 p{
   text-align: center;
-  font-size: 2em;
+  font-size: 1em;
   margin-top:2%;
   margin-bottom: 0%;
 }
@@ -85,7 +85,7 @@ p{
   top:40%;
   font-family: pixel;
   height:20%;
-  font-size: 2em;
+  font-size: 1em;
   box-sizing: border-box;
 }
 #nameSelect button{
@@ -95,7 +95,7 @@ p{
   top:70%;
   font-family: pixel;
   height:20%;
-  font-size: 2em;
+  font-size: 1em;
   box-sizing: border-box;
 }
 #colorSelect{

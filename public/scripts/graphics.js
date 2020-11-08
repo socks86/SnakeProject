@@ -94,7 +94,7 @@ graphics.showGameState = function(gameState){
         graphics.addSprite('../images/pixelHead.png',gameObject.head.x,gameObject.head.y,gameObject.head.color,gameObject.head.direction);
         
         gameObject.tail.forEach(segment =>{
-            graphics.addSprite('../images/pixel.png',segment.x,segment.y,segment.color,segment.direction);
+            graphics.addSprite('../images/pixel.png',segment.x,segment.y,segment.color);
         });
     }
     for(var i=0; i<gameState.foods.length; i++){
