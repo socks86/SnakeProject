@@ -145,10 +145,11 @@ class Snake{
 }
 
 class Apple{
-    constructor(){
-        this.x = Math.floor((Math.random() * 32) + 1);
-        this.y = Math.floor((Math.random() * 18) + 1);
+    contructor(x, y){
+        this.x = x;
+        thix.y = y;
     }
+
     collides(segment){
         if(this.x == segment.x && this.y == segment.y){
             return true;
@@ -156,11 +157,11 @@ class Apple{
         else{
             return false;
         }
-    }
-}
 
 class Mob{
     constructor(x, y){
+        this.x = x;
+        this.y = y;
     }
 
     collides(segment){
@@ -170,8 +171,6 @@ class Mob{
         else{
             return false;
         }
-    }
-}
 
 module.exports.Game = class Game{
     constructor(){
@@ -240,8 +239,8 @@ module.exports.Game = class Game{
             this.players[i].update();
             var currentHead = this.players[i].head;
             for (var j=0; j<this.foods.length; j++){
-                if (currentHead.collides(this.foods[j])){
-                    this.growPlayer(this.players[i].playerId);
+                if currentHead.collides(this.foods[j]){
+                    this.growPlayer(this.players[i]);
                     this.foods.splice(j,1);
                 }
             }        

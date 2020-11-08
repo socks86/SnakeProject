@@ -98,8 +98,20 @@ graphics.showGameState = function(gameState){
             graphics.addSprite('../images/pixel.png',segment.x,segment.y,segment.color,segment.direction);
         });
     }
+    for(var i=0; i<gameState.foods.length; i++){
+        var gameObject = gameState.foods[i];
+        graphics.addSprite('../images/apple.png', gameObject.x,
+                gameObject.y);
+        }
+
     //make item sprites
+
     //make mob sprites
+    //for (var i=0; i <= 2; i++){
+       // graphics.addSprite('../images/honeybadger.gif',
+           // Math.floor((Math.random() * 32) + 1),
+           // Math.floor((Math.random() * 18) + 1));
+
     //for gameState.enemies.length?
 
     graphics.draw();
