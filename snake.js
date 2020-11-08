@@ -345,25 +345,25 @@ module.exports.Game = class Game{
 
     addItem(){
         var itemChance = Math.floor(Math.random()*100)+1;//1-100
-        if(itemChance>97){
+        if(itemChance>99){
             this.items.push(new GoldenApple(new Item(this.items)));
         }
-        if(itemChance>96){
+        if(itemChance>97){
             this.items.push(new Skull(new Item(this.items)));
         }
         if(itemChance>95){
             this.items.push(new Portal(new Item(this.items)));
         }
-        else if(itemChance>90){
+        else if(itemChance>93){
             this.items.push(new Potion(new Item(this.items)));
         }
-        else if(itemChance>80){
+        else if(itemChance>91){
             this.items.push(new TempPotion(new Item(this.items)));
         }
-        else if(itemChance>60){
+        else if(itemChance>75){
             this.items.push(new Orange(new Item(this.items)));
         }
-        else if(itemChance>35){
+        else if(itemChance>50){
             this.items.push(new Banana(new Item(this.items)));
         }
         else {
@@ -374,7 +374,7 @@ module.exports.Game = class Game{
 
 
     update(){
-        if (Math.random() > 0.8){
+        if (Math.random() > 0.9){
             this.addItem();
         }
 
