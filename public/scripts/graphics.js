@@ -97,10 +97,9 @@ graphics.showGameState = function(gameState){
             graphics.addSprite('../images/pixel.png',segment.x,segment.y,segment.color);
         });
     }
-    for(var i=0; i<gameState.foods.length; i++){
-        var gameObject = gameState.foods[i];
-        graphics.addSprite('../images/apple.png', gameObject.x,
-                gameObject.y);
+    for(var i=0; i<gameState.items.length; i++){
+        var gameObject = gameState.items[i];
+        graphics.addSprite('../images/'+gameObject.image+'.png', gameObject.x,gameObject.y);
         }
 
     //make item sprites

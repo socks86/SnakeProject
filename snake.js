@@ -43,9 +43,12 @@ class Snake{
         this.playerId = playerId;
         this.socket = socketId;
         this.length = 0;
+        this.deathFlag = false;
+        this.shrinkFlag = false;
         this.generatePosDir();
     }
     generatePosDir(){
+        //this could be altered to check collisions
         var x = Math.floor(Math.random()*GAME_WIDTH);
         var y = Math.floor(Math.random()*GAME_HEIGHT);
         var dir;
@@ -68,12 +71,16 @@ class Snake{
         this.direction = dir;
         this.lastDirection = dir;
     }
-    grow(){
-        this.length++;
+    grow(x){
+        this.length+=x;
     }
-    shrink(){
+    shrink(x){
         if (this.length>0){
-            this.length--;
+            this.length-=x;
+            this.tail.splice(this.tail.length -x,x);
+        }
+        if(this.length<0){
+            this.length=0;
         }
     }
     setDirection(direction){
@@ -149,19 +156,124 @@ class Snake{
         this.move();
     }
 }
+class Item{
+    constructor(items){
 
-class Apple{
-    constructor(){
         this.x = Math.floor((Math.random() * 32));
         this.y = Math.floor((Math.random() * 18));
+        while (this.isOccupied(items)){
+            this.x = Math.floor((Math.random() * 32));
+            this.y = Math.floor((Math.random() * 18));
+        }
+        this.image = 'pixel';
     }
-    collides(segment){
-        if(this.x == segment.x && this.y == segment.y){
-            return true;
+    isOccupied(items){
+        for (var i =0; i<items.length; i++){
+            if(this.x == items[i].x && this.y == items[i].y){
+                return true;
+            }else{
+                return false;
+            }
         }
-        else{
-            return false;
-        }
+    }
+    pickedUp(player){
+        player.grow(1);
+    }
+}
+class Apple{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'apple';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+    }
+}
+class Banana{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'banana';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        player.grow(2);
+    }
+}
+class Orange{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'orange';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        player.grow(4);
+    }
+}
+class Portal{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'portal';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        player.generatePosDir();
+    }
+}
+class Skull{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'skull';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        player.deathFlag = true;
+    }
+}
+class TempPotion{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'tempPotion';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        player.tail=[];
+    }
+}
+class Potion{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'potion';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        player.length = 0;
+        player.tail = [];
+    }
+}
+class GoldenApple{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'goldenApple';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        player.grow(99);
     }
 }
 
@@ -184,7 +296,7 @@ module.exports.Game = class Game{
         this.players = [];
         this.highScores = [];
         this.mobs=[];
-        this.foods=[];
+        this.items=[];
     }
     addPlayer(playerId,socketId,name,color){
         this.players.push(
@@ -217,12 +329,12 @@ module.exports.Game = class Game{
     }
     growPlayer(playerId){
         if(this.getPlayerById(playerId) != -1){
-            this.getPlayerById(playerId).grow();
+            this.getPlayerById(playerId).grow(1);
         }
     }
     shrinkPlayer(playerId){
         if(this.getPlayerById(playerId) != -1){
-            this.getPlayerById(playerId).shrink();
+            this.getPlayerById(playerId).shrink(3);
         }
     }
     getGameState(){
@@ -231,24 +343,51 @@ module.exports.Game = class Game{
         return this;
     }
 
-    addApple(){
-        this.foods.push(new Apple());
+    addItem(){
+        var itemChance = Math.floor(Math.random()*100)+1;//1-100
+        if(itemChance>97){
+            this.items.push(new GoldenApple(new Item(this.items)));
+        }
+        if(itemChance>96){
+            this.items.push(new Skull(new Item(this.items)));
+        }
+        if(itemChance>95){
+            this.items.push(new Portal(new Item(this.items)));
+        }
+        else if(itemChance>90){
+            this.items.push(new Potion(new Item(this.items)));
+        }
+        else if(itemChance>80){
+            this.items.push(new TempPotion(new Item(this.items)));
+        }
+        else if(itemChance>60){
+            this.items.push(new Orange(new Item(this.items)));
+        }
+        else if(itemChance>35){
+            this.items.push(new Banana(new Item(this.items)));
+        }
+        else {
+            this.items.push(new Apple(new Item(this.items)));
+        }
     }
 
 
 
     update(){
         if (Math.random() > 0.8){
-            this.addApple();
+            this.addItem();
         }
 
         for (var i=0;i<this.players.length;i++){
             this.players[i].update();
+            var pid = this.players[i].playerId;
+
             var currentHead = this.players[i].head;
-            for (var j=0; j<this.foods.length; j++){
-                if (currentHead.collides(this.foods[j])){
-                    this.growPlayer(this.players[i].playerId);
-                    this.foods.splice(j,1);
+            for (var j=0; j<this.items.length; j++){
+                if (currentHead.collides(this.items[j])){
+                    //this.growPlayer(this.players[i].playerId);
+                    this.items[j].pickedUp(this.players[i]);
+                    this.items.splice(j,1);
                 }
             }        
             for (var j=0;j<this.players.length;j++){
@@ -262,10 +401,21 @@ module.exports.Game = class Game{
                     }
                 }
             }
-            for (var j=0;j<this.foods.length;j++){
-                if(currentHead.collides(this.foods[j])){
-                    this.growPlayer(this.players[i].playerId);
-                    this.foods.splice(j,1);
+            // for (var j=0;j<this.items.length;j++){
+            //     if(currentHead.collides(this.foods[j])){
+            //         this.growPlayer(this.players[i].playerId);
+            //         this.foods.splice(j,1);
+            //     }
+            // }
+            if(this.getPlayerById(pid) != -1){
+                if(this.players[i].shrinkFlag){
+                    this.shrinkPlayer(this.players[i]);
+                    if(this.players[i].length<=1){
+                        this.players[i].shrinkFlag = false;
+                    }
+                }
+                if (this.players[i].deathFlag){
+                    this.removePlayer(this.players[i].playerId);
                 }
             }
         }
