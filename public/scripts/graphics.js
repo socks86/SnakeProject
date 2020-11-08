@@ -10,7 +10,7 @@ window.addEventListener('resize', resize);
 // Resize function window
 function resize() {
 	// Resize the renderer
-	app.renderer.resize(window.innerHeight*(16/9), window.innerHeight);
+	app.renderer.resize(window.innerWidth, window.innerHeight);
 }
 //resize before 1st render
 resize();
