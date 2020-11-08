@@ -101,6 +101,10 @@ graphics.showGameState = function(gameState){
         var gameObject = gameState.items[i];
         graphics.addSprite('../images/'+gameObject.image+'.png', gameObject.x,gameObject.y);
         }
+    for(var i=0; i<gameState.mobs.length; i++){
+        var gameObject = gameState.mobs[i];
+        graphics.addSprite('../images/'+gameObject.image+'.png', gameObject.x,gameObject.y,null,gameObject.dir);
+    }
 
     //make item sprites
 
