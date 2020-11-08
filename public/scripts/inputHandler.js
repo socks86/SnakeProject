@@ -15,15 +15,15 @@ function handleKeypress(e){
     case "ArrowRight":
       socket.emit('playerTurn','right');
       break;
-    case "KeyQ":
-      socket.emit('playerGrow');
-      break;
-    case "KeyW":
-      socket.emit('playerShrink');
-      break;
-    case "KeyE":
-      socket.emit('playerDie');
-      break;
+    // case "KeyQ":
+    //   socket.emit('playerGrow');
+    //   break;
+    // case "KeyW":
+    //   socket.emit('playerShrink');
+    //   break;
+    // case "KeyE":
+    //   socket.emit('playerDie');
+    //   break;
   };
   //if statement to support old browsers
 }
