@@ -86,7 +86,6 @@ graphics.makeItemSpriteFrame = function(){};
 graphics.makeMobSpriteFrame = function(){};
 
 graphics.showGameState = function(gameState){
-    console.log(gameState);
     this.sprites=[];
     //make player sprites
     for (var i=0;i<gameState.players.length;i++){
