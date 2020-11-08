@@ -293,7 +293,21 @@ class Mob{
         }
 
         return false;
+    }
+    update(){
+        switch(Math.floor(Math.random()*4)){
+            case 1:
+                this.dir = 'right';
+                break;
+            case 2:
+                this.dir = 'down';
+                break;
+            case 3:
+                this.dir = 'left';
+            case 0:
+                this.dir = 'up';
         }
+    }
 }
 
 
@@ -309,6 +323,7 @@ module.exports.Game = class Game{
     addPlayer(playerId,socketId,name,color){
         if (this.players.length == 0){
             this.items = [];
+            this.mobs = [];
         }
         this.players.push(
             new Snake(playerId,socketId,name,color)
@@ -396,7 +411,9 @@ module.exports.Game = class Game{
         if (Math.random() > 0.99){
             this.addMob();
         }
-
+        for(var i=0;i<this.mobs.length;i++){
+            this.mobs[i].update();
+        }
         for (var i=0;i<this.players.length;i++){
             this.players[i].update();
             var pid = this.players[i].playerId;
