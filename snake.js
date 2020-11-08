@@ -278,18 +278,27 @@ class GoldenApple{
 }
 
 class Mob{
-    constructor(x, y){
+    constructor(x, y, dir){
+        this.parent = item;
+        this.x = Math.floor((Math.random() * 32));
+        this.y = Math.floor((Math.random() * 18));
+        this.image = 'ghost';
+        this.dir = 'right';
+        
     }
 
-    collides(segment){
-        if(this.x == segment.x && this.y == segment.y){
+    collide(player){
+        if (player.head.collides(this)){
+            player.deathFlag = true;
             return true;
         }
-        else{
-            return false;
+
+        return false;
         }
-    }
 }
+
+
+
 
 module.exports.Game = class Game{
     constructor(){
@@ -371,11 +380,19 @@ module.exports.Game = class Game{
         }
     }
 
+    addMob(){
+        this.mobs.push(new Mob());
+    }
+
 
 
     update(){
         if (Math.random() > 0.9){
             this.addItem();
+        }
+
+        if (Math.random() > 0.98){
+            this.addMob();
         }
 
         for (var i=0;i<this.players.length;i++){
@@ -389,7 +406,14 @@ module.exports.Game = class Game{
                     this.items[j].pickedUp(this.players[i]);
                     this.items.splice(j,1);
                 }
+
             }        
+             for (var j=0; j<this.mobs.length; j++){
+                if (this.mobs[j].collide(currentHead)){
+                    this.mobs.splice(j,1);
+                }
+             }
+             
             for (var j=0;j<this.players.length;j++){
                 var snake = this.players[j];
                 if (j!=i && currentHead.collides(snake.head)){
