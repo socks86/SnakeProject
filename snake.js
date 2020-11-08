@@ -393,7 +393,7 @@ module.exports.Game = class Game{
             this.addItem();
         }
 
-        if (Math.random() > 0.98){
+        if (Math.random() > 0.99){
             this.addMob();
         }
 
