@@ -279,7 +279,6 @@ class GoldenApple{
 
 class Mob{
     constructor(x, y, dir){
-        this.parent = item;
         this.x = Math.floor((Math.random() * 32));
         this.y = Math.floor((Math.random() * 18));
         this.image = 'ghost';
@@ -412,7 +411,7 @@ module.exports.Game = class Game{
 
             }        
              for (var j=0; j<this.mobs.length; j++){
-                if (this.mobs[j].collide(currentHead)){
+                if (this.mobs[j].collide(this.players[i])){
                     this.mobs.splice(j,1);
                 }
              }
