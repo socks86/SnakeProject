@@ -15,6 +15,9 @@ function handleKeypress(e){
     case "ArrowRight":
       socket.emit('playerTurn','right');
       break;
+    case "Enter":
+      joinGame();
+      break;
     // case "KeyQ":
     //   socket.emit('playerGrow');
     //   break;
@@ -29,11 +32,13 @@ function handleKeypress(e){
 }
 //add event listeners for buttons
 function joinGame(){
-  var data = {};
-  data.name = getName();
-  data.color = getColor();
-  socket.emit('playerJoin', data);
-  toggleMenu();
+  if (document.getElementById('menu').style.display != "none"){
+    var data = {};
+    data.name = getName();
+    data.color = getColor();
+    socket.emit('playerJoin', data);
+    toggleMenu();
+  }
 }
 function toggleMenu(){
   var menu = document.getElementById('menu');

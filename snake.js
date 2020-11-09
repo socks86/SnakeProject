@@ -44,7 +44,6 @@ class Snake{
         this.socket = socketId;
         this.length = 0;
         this.deathFlag = false;
-        this.shrinkFlag = false;
         this.swordFlag = false;
         this.generatePosDir();
     }
@@ -461,11 +460,12 @@ module.exports.Game = class Game{
 
 
     update(){
-        if (Math.random() > 0.9){
+        var itemChance = 1 - (this.players.length*.1);
+        if (Math.random() > itemChance){
             this.addItem();
         }
-
-        if (Math.random() > 0.99){
+        var mobChance = 1 - (this.players.length*.01);
+        if (Math.random() > mobChance){
             if (Math.random() > 0.5){
                 this.addMob('slime', new Moveable());
             }
@@ -517,12 +517,6 @@ module.exports.Game = class Game{
                     this.growPlayer(pid, this.mobs.length);
                     this.mobs = [];
                     this.players[i].swordFlag = false;
-                }
-                if(this.players[i].shrinkFlag){
-                    this.shrinkPlayer(this.players[i]);
-                    if(this.players[i].length<=1){
-                        this.players[i].shrinkFlag = false;
-                    }
                 }
                 if (this.players[i].deathFlag){
                     this.removePlayer(this.players[i].playerId);
