@@ -45,6 +45,7 @@ class Snake{
         this.length = 0;
         this.deathFlag = false;
         this.shrinkFlag = false;
+        this.swordFlag = false;
         this.generatePosDir();
     }
     generatePosDir(){
@@ -285,6 +286,7 @@ class Sword{
     }
     pickedUp(player){
         this.parent.pickedUp(player);
+        player.swordFlag = true;
         //method to kill all mobs here
     }
 }
@@ -365,9 +367,9 @@ module.exports.Game = class Game{
             this.getPlayerById(playerId).setDirection(direction);
         }
     }
-    growPlayer(playerId){
+    growPlayer(playerId, x){
         if(this.getPlayerById(playerId) != -1){
-            this.getPlayerById(playerId).grow(1);
+            this.getPlayerById(playerId).grow(x);
         }
     }
     shrinkPlayer(playerId){
@@ -466,6 +468,11 @@ module.exports.Game = class Game{
             //     }
             // }
             if(this.getPlayerById(pid) != -1){
+                if(this.players[i].swordFlag){
+                    this.growPlayer(pid, this.mobs.length);
+                    this.mobs = [];
+                    this.players[i].swordFlag = false;
+                }
                 if(this.players[i].shrinkFlag){
                     this.shrinkPlayer(this.players[i]);
                     if(this.players[i].length<=1){
