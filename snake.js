@@ -333,6 +333,37 @@ class Spinnable{
     }
 }
 
+class Moveable{
+    update(mob){
+        switch(Math.floor(Math.random()*4)){
+            case 1:
+                mob.x++;
+                if (mob.x > 31){
+                    mob.x = 0;
+                }
+                break;
+            case 2:
+                mob.x--;
+                if (mob.x < 0){
+                    mob.x = 31;
+                }
+                break;
+            case 3:
+                mob.y++;
+                if (mob.y > 17){
+                    mob.y = 0;
+                }
+                break;
+            case 4:
+                mob.y--;
+                if (mob.y < 0){
+                    mob.y = 17;
+                }
+                break;
+        }
+    }
+}
+
 
 
 
@@ -435,7 +466,12 @@ module.exports.Game = class Game{
         }
 
         if (Math.random() > 0.99){
-            this.addMob('ghost', new Spinnable());
+            if (Math.random() > 0.5){
+                this.addMob('slime', new Moveable());
+            }
+            else {
+                this.addMob('ghost', new Spinnable());
+            }
         }
         for(var i=0;i<this.mobs.length;i++){
             this.mobs[i].update();
