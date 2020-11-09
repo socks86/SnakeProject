@@ -276,6 +276,18 @@ class GoldenApple{
         player.grow(99);
     }
 }
+class Sword{
+    constructor(item){
+        this.parent = item;
+        this.x = item.x;
+        this.y = item.y;
+        this.image = 'sword';
+    }
+    pickedUp(player){
+        this.parent.pickedUp(player);
+        //method to kill all mobs here
+    }
+}
 
 class Mob{
     constructor(image, updateObject){
@@ -383,16 +395,19 @@ module.exports.Game = class Game{
         if(itemChance>99){
             this.items.push(new GoldenApple(new Item(this.items)));
         }
-        if(itemChance>97){
+        else if(itemChance>97){
+            this.items.push(new Sword(new Item(this.items)));
+        }
+        else if(itemChance>95){
             this.items.push(new Skull(new Item(this.items)));
         }
-        if(itemChance>95){
+        else if(itemChance>93){
             this.items.push(new Portal(new Item(this.items)));
         }
-        else if(itemChance>93){
+        else if(itemChance>91){
             this.items.push(new Potion(new Item(this.items)));
         }
-        else if(itemChance>91){
+        else if(itemChance>89){
             this.items.push(new TempPotion(new Item(this.items)));
         }
         else if(itemChance>75){
