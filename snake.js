@@ -278,11 +278,12 @@ class GoldenApple{
 }
 
 class Mob{
-    constructor(x, y, dir){
+    constructor(image, updateObject){
         this.x = Math.floor((Math.random() * 32));
         this.y = Math.floor((Math.random() * 18));
-        this.image = 'ghost';
+        this.image = image;
         this.dir = 'right';
+        this.updateObject = updateObject;
         
     }
 
@@ -294,18 +295,26 @@ class Mob{
 
         return false;
     }
+
     update(){
-        switch(Math.floor(Math.random()*4)){
+        this.updateObject.update(this);
+        }
+    
+}
+
+class Spinnable{
+    update(mob){
+         switch(Math.floor(Math.random()*4)){
             case 1:
-                this.dir = 'right';
+                mob.dir = 'right';
                 break;
             case 2:
-                this.dir = 'down';
+                mob.dir = 'down';
                 break;
             case 3:
-                this.dir = 'left';
+                mob.dir = 'left';
             case 0:
-                this.dir = 'up';
+                mob.dir = 'up';
         }
     }
 }
@@ -397,8 +406,8 @@ module.exports.Game = class Game{
         }
     }
 
-    addMob(){
-        this.mobs.push(new Mob());
+    addMob(image, updateObject){
+        this.mobs.push(new Mob(image, updateObject));
     }
 
 
@@ -409,7 +418,7 @@ module.exports.Game = class Game{
         }
 
         if (Math.random() > 0.99){
-            this.addMob();
+            this.addMob('ghost', new Spinnable());
         }
         for(var i=0;i<this.mobs.length;i++){
             this.mobs[i].update();
