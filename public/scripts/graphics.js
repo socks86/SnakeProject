@@ -80,10 +80,6 @@ graphics.addSprite = function(image,x,y,color,direction){
     }
     this.sprites.push(newSprite);
 };
-//different for other objects
-graphics.makeSnakeSpriteFrame = function(){};
-graphics.makeItemSpriteFrame = function(){};
-graphics.makeMobSpriteFrame = function(){};
 
 graphics.showGameState = function(gameState){
     this.sprites=[];
